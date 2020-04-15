@@ -46,14 +46,15 @@ class Orders extends Component {
   };
 
   render() {
-    let filter = null;
+    let filter = <p>loading...</p>;
     if (this.props.orders && this.props.orders.length > 0) {
       filter = (
         <div>
           <h2>My Orders:</h2>
-          <div>Filter By:</div>
+          <div style={{ fontWeight: "bold" }}>Filter By:</div>
           <span>
             <label>Date:</label>
+            <br />
             old:
             <input
               type="radio"
@@ -71,8 +72,10 @@ class Orders extends Component {
               checked={this.state.dateCheck === "new"}
             />
           </span>
+          <br />
           <span>
             <label>Price:</label>
+            <br />
             <span>
               low:
               <input
