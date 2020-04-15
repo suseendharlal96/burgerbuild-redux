@@ -38,6 +38,20 @@ const orderStore = (state = initialState, action) => {
         ...state,
         orders: action.orderData,
       };
+    case actionTypes.INIT_DELETE:
+      return {
+        ...state,
+        loading: true,
+      };
+    case actionTypes.DELETE_ORDER:
+      const updateOrder = state.orders.filter(
+        (data) => data.id !== action.delId
+      );
+      return {
+        ...state,
+        orders: updateOrder,
+        loading: false,
+      };
     default:
       return state;
   }

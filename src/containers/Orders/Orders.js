@@ -40,58 +40,77 @@ class Orders extends Component {
     }
   };
 
+  deleteHandler = (value) => {
+    console.log(value);
+    this.props.deleteOrders(value, { ...this.props });
+  };
+
   render() {
+    let filter = null;
+    if (this.props.orders && this.props.orders.length > 0) {
+      filter = (
+        <div>
+          <h2>My Orders:</h2>
+          <div>Filter By:</div>
+          <span>
+            <label>Date:</label>
+            old:
+            <input
+              type="radio"
+              name="price"
+              value="old"
+              onChange={(event) => this.sort(event)}
+              checked={this.state.dateCheck === "old"}
+            />
+            new:
+            <input
+              type="radio"
+              name="price"
+              value="new"
+              onChange={(event) => this.sort(event)}
+              checked={this.state.dateCheck === "new"}
+            />
+          </span>
+          <span>
+            <label>Price:</label>
+            <span>
+              low:
+              <input
+                type="radio"
+                name="price"
+                value="low"
+                onChange={(event) => this.sort(event)}
+                checked={this.state.priceCheck === "low"}
+              />
+              high:
+              <input
+                type="radio"
+                name="price"
+                value="high"
+                onChange={(event) => this.sort(event)}
+                checked={this.state.priceCheck === "high"}
+              />
+            </span>
+          </span>
+        </div>
+      );
+    } else {
+      filter = <p>No Orders found!</p>;
+    }
     console.log(this.props.orders);
     return (
       <div>
-        <h2>My Orders:</h2>
-        <div>Filter By:</div>
-        <span>
-          <label>Date:</label>
-          old:
-          <input
-            type="radio"
-            name="price"
-            value="old"
-            onChange={(event) => this.sort(event)}
-            checked={this.state.dateCheck === "old"}
-          />
-          new:
-          <input
-            type="radio"
-            name="price"
-            value="new"
-            onChange={(event) => this.sort(event)}
-            checked={this.state.dateCheck === "new"}
-          />
-        </span>
-        <span>
-          <label>Price:</label>
-          <span>
-            low:
-            <input
-              type="radio"
-              name="price"
-              value="low"
-              onChange={(event) => this.sort(event)}
-              checked={this.state.priceCheck === "low"}
-            />
-            high:
-            <input
-              type="radio"
-              name="price"
-              value="high"
-              onChange={(event) => this.sort(event)}
-              checked={this.state.priceCheck === "high"}
-            />
-          </span>
-        </span>
+        {filter}
         {this.props.orders.map((order) => {
           return (
             <Order
+              {...this.props}
               key={order.id}
+              id={order.id}
+              date={order.orderDate}
               price={order.price}
               ingredients={order.ingredients}
+              delete={() => this.deleteHandler(order.id)}
             />
           );
         })}
@@ -109,6 +128,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     fetchOrders: () => dispatch(action.fetchOrders()),
+    deleteOrders: (id, props) => dispatch(action.deleteOrder(id, props)),
   };
 };
 

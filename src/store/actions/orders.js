@@ -12,10 +12,9 @@ export const initPurchase = () => {
   };
 };
 
-export const setOrderSuccess = (id, orderData) => {
+export const setOrderSuccess = (orderData) => {
   return {
     type: actionTypes.PLACE_ORDER_SUCCESS,
-    id: id,
     orderData: orderData,
   };
 };
@@ -31,7 +30,11 @@ export const purchaseBurger = (orderData) => {
     axios
       .post("/orders.json", orderData)
       .then((response) => {
-        dispatch(setOrderSuccess(response.data, orderData));
+        console.log(response);
+        console.log(orderData);
+        const order = { ...orderData, id: response.data.name };
+        console.log(order);
+        dispatch(setOrderSuccess(order));
       })
       .catch((error) => {
         console.log(error);
@@ -58,6 +61,36 @@ export const fetchOrders = () => {
           a.push({ ...res.data[key], id: key });
         }
         dispatch(setFetchedOrders(a));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+};
+
+export const deleteStateOrder = (id) => {
+  return {
+    type: actionTypes.DELETE_ORDER,
+    delId: id,
+  };
+};
+
+export const initDel = () => {
+  return {
+    type: actionTypes.INIT_DELETE,
+  };
+};
+
+export const deleteOrder = (id, obj) => {
+  return (dispatch) => {
+    dispatch(initDel());
+    axios
+      .delete(`/orders/${id}.json`)
+      .then((res) => {
+        console.log(res);
+        console.log(obj);
+        dispatch(deleteStateOrder(id));
+        obj.history.replace("/orders");
       })
       .catch((err) => {
         console.log(err);
