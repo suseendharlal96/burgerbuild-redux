@@ -4,10 +4,10 @@ import { connect } from "react-redux";
 import Button from "../../UI/Modal/Button/Button";
 
 const orderDetail = (props) => {
-  console.log(props);
-  console.log(props.id);
-  console.log(props.ingredients);
-  console.log(props.price);
+  console.log(props.date);
+  // console.log(props.id);
+  // console.log(props.ingredients);
+  // console.log(props.price);
   let button;
   if (props.loading) {
     button = <Button btntype="Danger">Deleting...</Button>;
@@ -21,8 +21,8 @@ const orderDetail = (props) => {
 
   return (
     <div>
-      <h2>Product Detail:</h2>
-      <p>Product ordered on: {props.date}</p>
+      <h2>Burger Detail:</h2>
+      <p>Burger ordered on: {new Date(props.date).toISOString()}</p>
       <p>ingredients added are:</p>
       {Object.keys(props.ingredients).map((ing) => {
         return (
