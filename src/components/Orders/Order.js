@@ -49,6 +49,10 @@ class order extends Component {
         <p>
           Price: <strong>Rs.{this.props.price}</strong>
         </p>
+        <p>
+          Burger ordered on:
+          <strong>{new Date(this.props.date).toString()}</strong>
+        </p>
         <div>
           <Button btntype="Success" clicked={this.details}>
             Details
@@ -63,6 +67,7 @@ class order extends Component {
                 <OrderDetail
                   id={this.props.id}
                   date={this.props.date}
+                  custDetails={this.props.custDetails}
                   price={this.props.price}
                   ingredients={this.props.ingredients}
                   delete={this.props.delete}

@@ -60,7 +60,7 @@ export const fetchOrders = () => {
         for (let key in res.data) {
           a.push({ ...res.data[key], id: key });
         }
-        dispatch(setFetchedOrders(a));
+        dispatch(setFetchedOrders(a.reverse()));
       })
       .catch((err) => {
         console.log(err);

@@ -25,6 +25,14 @@ const orderDetail = (props) => {
       <div>
         <h2>Burger Detail:</h2>
         <p>Burger ordered on: {new Date(props.date).toString()}</p>
+        <p>Customer Details:</p>
+        {Object.keys(props.custDetails).map((ing) => {
+          return (
+            <li key={ing}>
+              {ing} <span>:{props.custDetails[ing]}</span>
+            </li>
+          );
+        })}
         <p>ingredients added are:</p>
         {Object.keys(props.ingredients).map((ing) => {
           return (

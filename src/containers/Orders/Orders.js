@@ -110,6 +110,7 @@ class Orders extends Component {
               {...this.props}
               key={order.id}
               id={order.id}
+              custDetails = {order.customerDetails}
               date={order.orderDate}
               price={order.price}
               ingredients={order.ingredients}
