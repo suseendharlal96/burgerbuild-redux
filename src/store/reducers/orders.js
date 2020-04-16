@@ -7,7 +7,6 @@ const initialState = {
 };
 
 const orderStore = (state = initialState, action) => {
-  console.log("order", action);
   switch (action.type) {
     case actionTypes.INIT_ORDER:
       return {

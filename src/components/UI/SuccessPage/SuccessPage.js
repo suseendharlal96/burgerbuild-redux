@@ -1,12 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Route } from "react-router-dom";
 
 import classes from "./SuccessPage.css";
-import Orders from "../../../containers/Orders/Orders";
 import Button from "../Modal/Button/Button";
 import Burger from "../../Burger/Burger";
-import axios from "../../../axios-orders";
 
 class Success extends Component {
   render() {

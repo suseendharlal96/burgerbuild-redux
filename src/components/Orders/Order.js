@@ -13,6 +13,7 @@ class order extends Component {
 
   closeModalHandler = () => {
     this.setState({ continuePurchase: false });
+    this.props.history.replace("/orders");
   };
 
   details = () => {
