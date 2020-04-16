@@ -1,7 +1,6 @@
 .Button {
-  border-radius: 15px;
   border: none;
-  color: white;
+  background-color: transparent;
   outline: none;
   cursor: pointer;
   font: inherit;
@@ -15,11 +14,14 @@
 }
 
 .Success {
-  color: #ffffff;
-  background-color: green;
+  color: green;
 }
 
 .Danger {
-  color: #ffffff;
-  background-color: red;
+  color: red;
+}
+
+.Button:disabled {
+  color: #ccc;
+  cursor: not-allowed;
 }

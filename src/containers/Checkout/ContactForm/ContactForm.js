@@ -17,6 +17,11 @@ class ContactData extends Component {
           placeholder: "Your Name",
         },
         value: "",
+        validation: {
+          isRequired: true,
+        },
+        valid: false,
+        touched: false,
       },
       street: {
         elementType: "input",
@@ -25,14 +30,27 @@ class ContactData extends Component {
           placeholder: "Street",
         },
         value: "",
+        validation: {
+          isRequired: true,
+        },
+        valid: false,
+        touched: false,
       },
       zipCode: {
         elementType: "input",
         elementConfig: {
           type: "text",
-          placeholder: "ZIP Code",
+          placeholder: "ZIP Code(5 charac)",
         },
         value: "",
+        validation: {
+          isRequired: true,
+          minLength: 5,
+          maxLength: 5,
+          isNumeric: true,
+        },
+        valid: false,
+        touched: false,
       },
       country: {
         elementType: "input",
@@ -41,6 +59,11 @@ class ContactData extends Component {
           placeholder: "Country",
         },
         value: "",
+        validation: {
+          isRequired: true,
+        },
+        valid: false,
+        touched: false,
       },
       email: {
         elementType: "input",
@@ -49,6 +72,12 @@ class ContactData extends Component {
           placeholder: "Your E-Mail",
         },
         value: "",
+        validation: {
+          isRequired: true,
+          isEmail: true,
+        },
+        valid: false,
+        touched: false,
       },
       deliveryMethod: {
         elementType: "select",
@@ -59,8 +88,13 @@ class ContactData extends Component {
           ],
         },
         value: "",
+        validation: {
+          isRequired: true,
+        },
+        valid: false,
       },
     },
+    formIsValid: false,
   };
 
   componentWillMount() {
@@ -69,13 +103,51 @@ class ContactData extends Component {
     }
   }
 
+  checkValidity(value, rules) {
+    let isValid = true;
+    if (!rules) {
+      return true;
+    }
+
+    if (rules.isRequired) {
+      isValid = value.trim() !== "" && isValid;
+    }
+
+    if (rules.minLength) {
+      isValid = value.length >= rules.minLength && isValid;
+    }
+
+    if (rules.maxLength) {
+      isValid = value.length <= rules.maxLength && isValid;
+    }
+
+    if (rules.isEmail) {
+      const pattern = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
+      isValid = pattern.test(value) && isValid;
+    }
+
+    if (rules.isNumeric) {
+      const pattern = /^\d+$/;
+      isValid = pattern.test(value) && isValid;
+    }
+
+    return isValid;
+  }
+
   inputChangedHandler = (event, id) => {
     event.preventDefault();
     const copy = { ...this.state.orderForm };
     const deepCopy = { ...copy[id] };
     deepCopy.value = event.target.value;
+    deepCopy.valid = this.checkValidity(deepCopy.value, deepCopy.validation);
+    deepCopy.touched = true;
     copy[id] = deepCopy;
-    this.setState({ orderForm: copy });
+    let formIsValid = true;
+    for (let inputIdentifier in copy) {
+      formIsValid = copy[inputIdentifier].valid && formIsValid;
+    }
+    this.setState({ orderForm: copy, formIsValid: formIsValid });
+    console.log(this.state.formIsValid);
   };
 
   formSubmit = (event) => {
@@ -98,7 +170,11 @@ class ContactData extends Component {
     for (let key in this.state.orderForm) {
       formData.push({ id: key, inputData: this.state.orderForm[key] });
     }
-    let button = <Button btntype="Success">PLACE ORDER</Button>;
+    let button = (
+      <Button disabled={!this.state.formIsValid} btntype="Success">
+        PLACE ORDER
+      </Button>
+    );
     if (this.props.loading) {
       button = <Button btntype="Success">PLACING ORDER...</Button>;
     }
@@ -112,6 +188,9 @@ class ContactData extends Component {
               elementType={data.inputData.elementType}
               elementConfig={data.inputData.elementConfig}
               value={data.inputData.value}
+              invalid={!data.inputData.valid}
+              shouldValidate={data.inputData.validation}
+              touched={data.inputData.touched}
               changed={(event) => this.inputChangedHandler(event, data.id)}
             />
           );
