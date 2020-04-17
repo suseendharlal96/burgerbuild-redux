@@ -34,11 +34,11 @@ export const authLogout = (token) => {
   return (dispatch) => {
     setTimeout(() => {
       dispatch(logout());
-    }, +token.expiresIn * 1000);
+    }, +token.expiresIn * 10000);
   };
 };
 
-export const authStart = (isSignup, data) => {
+export const authStart = (isSignup, data, routeData) => {
   console.log(isSignup, data);
   const loginData = {
     email: data.email.value,
@@ -61,6 +61,7 @@ export const authStart = (isSignup, data) => {
         console.log(res.data);
         dispatch(loginSuccess(res.data));
         dispatch(authLogout(res.data));
+        routeData.history.replace("/");
       })
       .catch((err) => {
         console.log(err);

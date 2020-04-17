@@ -91,7 +91,7 @@ class Auth extends Component {
   formSubmit = (event, isSignup) => {
     event.preventDefault();
     console.log(isSignup);
-    this.props.submitForm(this.state.isSignup, this.state.authForm);
+    this.props.submitForm(this.state.isSignup, this.state.authForm, this.props);
   };
 
   render() {
@@ -154,8 +154,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    submitForm: (isSignup, loginData) =>
-      dispatch(authActions.authStart(isSignup, loginData)),
+    submitForm: (isSignup, loginData, routeData) =>
+      dispatch(authActions.authStart(isSignup, loginData, routeData)),
   };
 };
 

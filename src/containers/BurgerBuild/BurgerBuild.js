@@ -29,7 +29,11 @@ class Burgerbuild extends Component {
   };
 
   purchaseHandler = () => {
-    this.setState({ purchased: true });
+    if (this.props.isAuth) {
+      this.setState({ purchased: true });
+    } else {
+      this.props.history.replace("/auth");
+    }
   };
 
   closeModalHandler = () => {
@@ -73,6 +77,7 @@ class Burgerbuild extends Component {
               itemsAdded={this.props.addIngredient}
               itemsRemoved={this.props.removeIngredient}
               purchase={this.updatepurchase(this.props.ings)}
+              isAuth={this.props.isAuth}
               purchased={this.purchaseHandler}
               price={this.props.price}
               disabled={disabledInfo}
@@ -89,6 +94,7 @@ const mapStateToProps = (state) => {
   return {
     ings: state.burgerReducer.ingredients,
     price: state.burgerReducer.totalPrice,
+    isAuth: state.authReducer.idToken !== null,
   };
 };
 
