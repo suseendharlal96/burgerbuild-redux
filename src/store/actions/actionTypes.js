@@ -7,5 +7,11 @@ export const PLACE_ORDER_FAIL = "PLACE_ORDER_FAIL";
 export const INIT_ORDER = "INIT_ORDER";
 export const INIT_PURCHASE = "INIT_PURCHASE";
 export const SET_FETCHED_ORDERS = "SET_FETCHED_ORDERS";
+export const ORDERS_FAILED = "ORDERS_FAILED";
 export const DELETE_ORDER = "DELETE_ORDER";
 export const INIT_DELETE = "INIT_DELETE";
+
+export const AUTH_START = "AUTH_START";
+export const AUTH_SUCCESS = "AUTH_SUCCESS";
+export const AUTH_FAIL = "AUTH_FAIL";
+export const AUTH_LOGOUT = "AUTH_LOGOUT";

@@ -4,6 +4,7 @@ const initialState = {
   orders: [],
   loading: false,
   purchased: false,
+  error: null,
 };
 
 const orderStore = (state = initialState, action) => {
@@ -12,12 +13,14 @@ const orderStore = (state = initialState, action) => {
       return {
         ...state,
         purchased: false,
+        error: null,
       };
     case actionTypes.INIT_PURCHASE:
       return {
         ...state,
         loading: true,
         purchased: false,
+        error: null,
       };
     case actionTypes.PLACE_ORDER_SUCCESS:
       return {
@@ -36,6 +39,12 @@ const orderStore = (state = initialState, action) => {
       return {
         ...state,
         orders: action.orderData,
+        error: null,
+      };
+    case actionTypes.ORDERS_FAILED:
+      return {
+        ...state,
+        error: action.error,
       };
     case actionTypes.INIT_DELETE:
       return {

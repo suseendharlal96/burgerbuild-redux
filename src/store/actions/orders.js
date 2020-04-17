@@ -47,10 +47,17 @@ export const setFetchedOrders = (orderData) => {
   };
 };
 
-export const fetchOrders = () => {
+export const setFetchedOrdersFail = (error) => {
+  return {
+    type: actionTypes.ORDERS_FAILED,
+    error: error,
+  };
+};
+
+export const fetchOrders = (token) => {
   return (dispatch) => {
     axios
-      .get("/orders.json")
+      .get("/orders.json?auth=" + token)
       .then((res) => {
         const a = [];
         for (let key in res.data) {
@@ -59,7 +66,7 @@ export const fetchOrders = () => {
         dispatch(setFetchedOrders(a.reverse()));
       })
       .catch((err) => {
-        console.log(err);
+        dispatch(setFetchedOrdersFail(err.response.statusText));
       });
   };
 };

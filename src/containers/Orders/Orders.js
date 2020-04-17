@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 
 import Order from "../../components/Orders/Order";
 import * as action from "../../store/actions/index";
+import Button from "../../components/UI/Modal/Button/Button";
 
 class Orders extends Component {
   state = {
@@ -11,7 +12,8 @@ class Orders extends Component {
     dateCheck: "",
   };
   componentDidMount() {
-    this.props.fetchOrders();
+    console.log(this.props.token);
+    this.props.fetchOrders(this.props.token);
   }
 
   sort = (event) => {
@@ -46,8 +48,26 @@ class Orders extends Component {
   };
 
   render() {
-    let filter = <p>loading...</p>;
-    if (this.props.orders && this.props.orders.length > 0) {
+    let filter = null;
+    let error = null;
+    if (this.props.error) {
+      error = (
+        <div>
+          <p>{this.props.error}</p>
+          <Button
+            btntype="Success"
+            clicked={() => this.props.history.replace("/auth")}
+          >
+            click to Signup/in
+          </Button>
+        </div>
+      );
+    }
+    if (
+      !this.props.error &&
+      this.props.orders &&
+      this.props.orders.length > 0
+    ) {
       filter = (
         <div>
           <h2>My Orders:</h2>
@@ -97,12 +117,13 @@ class Orders extends Component {
           </span>
         </div>
       );
-    } else {
+    } else if (!this.props.error) {
       filter = <p>No Orders found!</p>;
     }
     console.log(this.props.orders);
     return (
       <div>
+        {error}
         {filter}
         {this.props.orders.map((order) => {
           return (
@@ -110,7 +131,7 @@ class Orders extends Component {
               {...this.props}
               key={order.id}
               id={order.id}
-              custDetails = {order.customerDetails}
+              custDetails={order.customerDetails}
               date={order.orderDate}
               price={order.price}
               ingredients={order.ingredients}
@@ -126,12 +147,14 @@ class Orders extends Component {
 const mapStateToProps = (state) => {
   return {
     orders: state.orderReducer.orders,
+    token: state.authReducer.idToken,
+    error: state.orderReducer.error,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    fetchOrders: () => dispatch(action.fetchOrders()),
+    fetchOrders: (token) => dispatch(action.fetchOrders(token)),
     deleteOrders: (id, props) => dispatch(action.deleteOrder(id, props)),
   };
 };
