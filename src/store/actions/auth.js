@@ -2,10 +2,11 @@ import axios from "axios";
 
 import * as actionType from "./actionTypes";
 
-export const loginSuccess = (data) => {
+export const loginSuccess = (data, email) => {
   return {
     type: actionType.AUTH_SUCCESS,
     idToken: data.idToken,
+    email: email,
     localId: data.localId,
   };
 };
@@ -59,7 +60,7 @@ export const authStart = (isSignup, data, routeData) => {
       .then((res) => {
         console.log(res);
         console.log(res.data);
-        dispatch(loginSuccess(res.data));
+        dispatch(loginSuccess(res.data, loginData.email));
         dispatch(authLogout(res.data));
         routeData.history.replace("/");
       })

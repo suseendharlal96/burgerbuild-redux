@@ -15,6 +15,7 @@ class ContactData extends Component {
         elementConfig: {
           type: "text",
           placeholder: "Your Name",
+          autofocus: "autofocus",
         },
         value: "",
         validation: {
@@ -70,13 +71,11 @@ class ContactData extends Component {
         elementConfig: {
           type: "email",
           placeholder: "Your E-Mail",
+          readonly: "readonly",
         },
-        value: "",
-        validation: {
-          isRequired: true,
-          isEmail: true,
-        },
-        valid: false,
+        value: this.props.email,
+        validation: {},
+        valid: true,
         touched: false,
       },
       deliveryMethod: {
@@ -147,7 +146,6 @@ class ContactData extends Component {
       formIsValid = copy[inputIdentifier].valid && formIsValid;
     }
     this.setState({ orderForm: copy, formIsValid: formIsValid });
-    console.log(this.state.formIsValid);
   };
 
   formSubmit = (event) => {
@@ -162,7 +160,7 @@ class ContactData extends Component {
       customerDetails: formValue,
       orderDate: new Date(),
     };
-    this.props.onPurchaseBurger(order);
+    this.props.onPurchaseBurger(order, this.props.token);
   };
 
   render() {
@@ -211,6 +209,8 @@ const mapStateToProps = (state) => {
   return {
     ingredients: state.burgerReducer.ingredients,
     price: state.burgerReducer.totalPrice,
+    token: state.authReducer.idToken,
+    email: state.authReducer.email,
     loading: state.orderReducer.loading,
     purchased: state.orderReducer.purchased,
   };
@@ -218,8 +218,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onPurchaseBurger: (orderData) =>
-      dispatch(orderActions.purchaseBurger(orderData)),
+    onPurchaseBurger: (orderData, token) =>
+      dispatch(orderActions.purchaseBurger(orderData, token)),
   };
 };
 

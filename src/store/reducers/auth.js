@@ -3,6 +3,7 @@ import * as actionTypes from "../actions/actionTypes";
 const initialState = {
   localId: null,
   idToken: null,
+  email: null,
   loading: false,
   error: null,
 };
@@ -14,6 +15,7 @@ const authStore = (state = initialState, action) => {
         ...state,
         localId: action.localId,
         idToken: action.idToken,
+        email: action.email,
         loading: false,
         error: null,
       };
@@ -21,12 +23,14 @@ const authStore = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
+        email: null,
         error: action.error,
       };
     case actionTypes.AUTH_START:
       return {
         ...state,
         loading: true,
+        email: null,
         error: null,
       };
     case actionTypes.AUTH_LOGOUT:
@@ -34,6 +38,7 @@ const authStore = (state = initialState, action) => {
         ...state,
         loading: false,
         error: null,
+        email: null,
         localId: null,
         idToken: null,
       };

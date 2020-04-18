@@ -24,11 +24,11 @@ export const setOrderFail = () => {
   };
 };
 
-export const purchaseBurger = (orderData) => {
+export const purchaseBurger = (orderData, token) => {
   return (dispatch) => {
     dispatch(initPurchase());
     axios
-      .post("/orders.json", orderData)
+      .post("/orders.json?auth=" + token, orderData)
       .then((response) => {
         const order = { ...orderData, id: response.data.name };
         dispatch(setOrderSuccess(order));
