@@ -39,7 +39,7 @@ export const authLogout = (token) => {
   };
 };
 
-export const authStart = (isSignup, data, routeData) => {
+export const authStart = (isSignup, data, routeData, ingData) => {
   console.log(isSignup, data);
   const loginData = {
     email: data.email.value,
@@ -62,7 +62,11 @@ export const authStart = (isSignup, data, routeData) => {
         console.log(res.data);
         dispatch(loginSuccess(res.data, loginData.email));
         dispatch(authLogout(res.data));
-        routeData.history.replace("/");
+        if (ingData) {
+          routeData.history.replace("/checkout");
+        } else {
+          routeData.history.replace("/");
+        }
       })
       .catch((err) => {
         console.log(err);

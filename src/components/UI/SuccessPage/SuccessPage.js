@@ -2,10 +2,16 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 
 import classes from "./SuccessPage.css";
+import * as actions from "../../../store/actions/index";
 import Button from "../Modal/Button/Button";
 import Burger from "../../Burger/Burger";
 
 class Success extends Component {
+  componentDidMount() {
+    this.props.initPurchase();
+    // this.props.resetIngre();
+  }
+
   render() {
     let burger = <p>Your burger is being prepared...</p>;
     if (this.props.ingredients) {
@@ -39,4 +45,10 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(Success);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    initPurchase: () => dispatch(actions.initOrder()),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Success);

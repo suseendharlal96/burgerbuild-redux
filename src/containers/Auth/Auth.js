@@ -91,7 +91,21 @@ class Auth extends Component {
   formSubmit = (event, isSignup) => {
     event.preventDefault();
     console.log(isSignup);
-    this.props.submitForm(this.state.isSignup, this.state.authForm, this.props);
+    if (this.props.price !== 0) {
+      this.props.submitForm(
+        this.state.isSignup,
+        this.state.authForm,
+        this.props,
+        true
+      );
+    } else {
+      this.props.submitForm(
+        this.state.isSignup,
+        this.state.authForm,
+        this.props,
+        false
+      );
+    }
   };
 
   render() {
@@ -149,13 +163,14 @@ const mapStateToProps = (state) => {
   return {
     loading: state.authReducer.loading,
     error: state.authReducer.error,
+    price: state.burgerReducer.totalPrice,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    submitForm: (isSignup, loginData, routeData) =>
-      dispatch(authActions.authStart(isSignup, loginData, routeData)),
+    submitForm: (isSignup, loginData, routeData, ingData) =>
+      dispatch(authActions.authStart(isSignup, loginData, routeData, ingData)),
   };
 };
 
