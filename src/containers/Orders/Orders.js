@@ -13,7 +13,7 @@ class Orders extends Component {
   };
   componentDidMount() {
     console.log(this.props.token);
-    this.props.fetchOrders(this.props.token);
+    this.props.fetchOrders(this.props.token, this.props.localId);
   }
 
   sort = (event) => {
@@ -148,13 +148,14 @@ const mapStateToProps = (state) => {
   return {
     orders: state.orderReducer.orders,
     token: state.authReducer.idToken,
+    localId: state.authReducer.localId,
     error: state.orderReducer.error,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    fetchOrders: (token) => dispatch(action.fetchOrders(token)),
+    fetchOrders: (token, userId) => dispatch(action.fetchOrders(token, userId)),
     deleteOrders: (id, props) => dispatch(action.deleteOrder(id, props)),
   };
 };
