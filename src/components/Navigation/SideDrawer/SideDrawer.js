@@ -14,7 +14,9 @@ class sideDrawer extends Component {
     }
     let user = null;
     if (this.props.email) {
-      user = "Welcome " + this.props.email;
+      user = (
+        <span style={{ color: "brown" }}> {"Welcome " + this.props.email}</span>
+      );
     }
     return (
       <div>
@@ -23,7 +25,7 @@ class sideDrawer extends Component {
           <div className={classes.Logo}>
             <Logo />
           </div>
-          <span style={{ color: "yellow" }}> {user}</span>
+          {user}
           <nav>
             <NavigationItems isAuth={this.props.isAuth} />
           </nav>

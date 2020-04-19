@@ -44,7 +44,7 @@ class Orders extends Component {
 
   deleteHandler = (value) => {
     console.log(value);
-    this.props.deleteOrders(value, { ...this.props });
+    this.props.deleteOrders(value, { ...this.props }, this.props.token);
   };
 
   render() {
@@ -156,7 +156,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     fetchOrders: (token, userId) => dispatch(action.fetchOrders(token, userId)),
-    deleteOrders: (id, props) => dispatch(action.deleteOrder(id, props)),
+    deleteOrders: (id, props, token) =>
+      dispatch(action.deleteOrder(id, props, token)),
   };
 };
 

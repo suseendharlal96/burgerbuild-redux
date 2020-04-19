@@ -143,6 +143,7 @@ class ContactData extends Component {
     copy[id] = deepCopy;
     let formIsValid = true;
     for (let inputIdentifier in copy) {
+      console.log(copy.email, copy.email.valid);
       formIsValid = copy[inputIdentifier].valid && formIsValid;
     }
     this.setState({ orderForm: copy, formIsValid: formIsValid });

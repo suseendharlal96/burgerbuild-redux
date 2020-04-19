@@ -86,11 +86,11 @@ export const initDel = () => {
   };
 };
 
-export const deleteOrder = (id, obj) => {
+export const deleteOrder = (id, obj, token) => {
   return (dispatch) => {
     dispatch(initDel());
     axios
-      .delete(`/orders/${id}.json`)
+      .delete(`/orders/${id}.json?auth=${token}`)
       .then((res) => {
         dispatch(deleteStateOrder(id));
         obj.history.replace("/orders");
