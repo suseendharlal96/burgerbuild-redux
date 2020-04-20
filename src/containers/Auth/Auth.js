@@ -128,6 +128,19 @@ class Auth extends Component {
     if (this.props.error) {
       error = <p style={{ color: "red" }}>{this.props.error}</p>;
     }
+
+    let modeButton = (
+      <Button clicked={this.changeMode}>
+        {this.state.isSignup ? "Switch to Signin" : "Switch to Signup"}
+      </Button>
+    );
+    if (this.props.loading) {
+      modeButton = (
+        <Button disabled="true" clicked={this.changeMode}>
+          {this.state.isSignup ? "Switch to Signin" : "Switch to Signup"}
+        </Button>
+      );
+    }
     let form = (
       <form onSubmit={(event) => this.formSubmit(event, this.state.isSignup)}>
         {formData.map((data) => {
@@ -151,9 +164,7 @@ class Auth extends Component {
       <div className={classes.Auth}>
         {error}
         {form}
-        <Button clicked={this.changeMode}>
-          {this.state.isSignup ? "Switch to Signin" : "Switch to Signup"}
-        </Button>
+        {modeButton}
       </div>
     );
   }

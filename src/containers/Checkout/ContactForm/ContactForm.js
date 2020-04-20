@@ -176,7 +176,11 @@ class ContactData extends Component {
       </Button>
     );
     if (this.props.loading) {
-      button = <Button btntype="Success">PLACING ORDER...</Button>;
+      button = (
+        <Button btntype="Success" disabled="true">
+          PLACING ORDER...
+        </Button>
+      );
     }
 
     let form = (

@@ -125,20 +125,22 @@ class Orders extends Component {
       <div>
         {error}
         {filter}
-        {this.props.orders.map((order) => {
-          return (
-            <Order
-              {...this.props}
-              key={order.id}
-              id={order.id}
-              custDetails={order.customerDetails}
-              date={order.orderDate}
-              price={order.price}
-              ingredients={order.ingredients}
-              delete={() => this.deleteHandler(order.id)}
-            />
-          );
-        })}
+        {this.props.token
+          ? this.props.orders.map((order) => {
+              return (
+                <Order
+                  {...this.props}
+                  key={order.id}
+                  id={order.id}
+                  custDetails={order.customerDetails}
+                  date={order.orderDate}
+                  price={order.price}
+                  ingredients={order.ingredients}
+                  delete={() => this.deleteHandler(order.id)}
+                />
+              );
+            })
+          : null}
       </div>
     );
   }
