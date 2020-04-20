@@ -22,10 +22,10 @@ class sideDrawer extends Component {
       <div>
         <Backdrop show={this.props.open} click={this.props.closed} />
         <div className={attachedClasses.join(" ")} onClick={this.props.closed}>
+          {user}
           <div className={classes.Logo}>
             <Logo />
           </div>
-          {user}
           <nav>
             <NavigationItems isAuth={this.props.isAuth} />
           </nav>

@@ -11,19 +11,17 @@ class toolbar extends Component {
     let user = null;
     if (this.props.email) {
       user = (
-        <span style={{ color: "yellow" }}>
-          {"Welcome " + this.props.email}
-        </span>
+        <span style={{ color: "yellow" }}>{"Welcome " + this.props.email}</span>
       );
     }
     return (
       <div>
         <header className={classes.Toolbar}>
           <DrawerToggle clicked={this.props.drawerToggleClicked} />
+          {user}
           <div className={classes.Logo}>
             <Logo />
           </div>
-          {user}
           <nav className={classes.DesktopOnly}>
             <NavigationItems isAuth={this.props.isAuth} />
           </nav>
