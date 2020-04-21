@@ -13,7 +13,11 @@ const orderDetail = (props) => {
   if (props) {
     let button;
     if (props.loading) {
-      button = <Button btntype="Danger">Deleting...</Button>;
+      button = (
+        <Button btntype="Danger" disabled="true">
+          Deleting...
+        </Button>
+      );
     } else {
       button = (
         <Button btntype="Danger" clicked={props.delete}>

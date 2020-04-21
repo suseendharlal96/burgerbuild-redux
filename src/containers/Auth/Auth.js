@@ -37,9 +37,28 @@ class Auth extends Component {
         valid: false,
         touched: false,
       },
+      confirmpassword: {
+        elementType: "input",
+        elementConfig: {
+          type: "password",
+          placeholder: "confirm Password",
+        },
+        value: "",
+        validation: {
+          isRequired: true,
+          checkmatch: true,
+        },
+        valid: false,
+        touched: false,
+      },
     },
     isSignup: true,
+    formIsValid: false,
   };
+
+  componentDidMount() {
+    console.log("init", this.state.authForm);
+  }
 
   checkValidity(value, rules) {
     let isValid = true;
@@ -53,6 +72,17 @@ class Auth extends Component {
 
     if (rules.minLength) {
       isValid = value.length >= rules.minLength && isValid;
+      // if (
+      //   this.state.authForm.confirmpassword &&
+      //   this.state.authForm.confirmpassword.value !== ""
+      // ) {
+      //   this.state.authForm.confirmpassword.value = "";
+      //   // isValid = false;
+      // }
+    }
+
+    if (rules.checkmatch) {
+      isValid = value === this.state.authForm.password.value && isValid;
     }
 
     if (rules.isEmail) {
@@ -65,19 +95,17 @@ class Auth extends Component {
 
   inputChangedHandler = (event, id) => {
     event.preventDefault();
-    const data = {
-      ...this.state.authForm,
-      [id]: {
-        ...this.state.authForm[id],
-        value: event.target.value,
-        valid: this.checkValidity(
-          event.target.value,
-          this.state.authForm[id].validation
-        ),
-        touched: true,
-      },
-    };
-    this.setState({ authForm: data });
+    const copy = { ...this.state.authForm };
+    const deepCopy = { ...copy[id] };
+    deepCopy.value = event.target.value;
+    deepCopy.valid = this.checkValidity(deepCopy.value, deepCopy.validation);
+    deepCopy.touched = true;
+    copy[id] = deepCopy;
+    let formIsValid = true;
+    for (let inputIdentifier in copy) {
+      formIsValid = copy[inputIdentifier].valid && formIsValid;
+    }
+    this.setState({ authForm: copy, formIsValid: formIsValid });
   };
 
   changeMode = () => {
@@ -86,6 +114,105 @@ class Auth extends Component {
         isSignup: !prevState.isSignup,
       };
     });
+    console.log(this.state.isSignup);
+    let newform = {
+      form: {
+        email: {
+          elementType: "input",
+          elementConfig: {
+            type: "email",
+            placeholder: "Email",
+          },
+          value: "",
+          validation: {
+            isRequired: true,
+            isEmail: true,
+          },
+          valid: false,
+          touched: false,
+        },
+        password: {
+          elementType: "input",
+          elementConfig: {
+            type: "password",
+            placeholder: "Password",
+          },
+          value: "",
+          validation: {
+            isRequired: true,
+            minLength: 6,
+          },
+          valid: false,
+          touched: false,
+        },
+        confirmpassword: {
+          elementType: "input",
+          elementConfig: {
+            type: "password",
+            placeholder: "confirm Password",
+          },
+          value: "",
+          validation: {
+            isRequired: true,
+            checkmatch: true,
+          },
+          valid: false,
+          touched: false,
+        },
+      },
+      isSignup: true,
+      formIsValid: false,
+    };
+    if (this.state.isSignup !== true) {
+      console.log(1);
+      this.setState({
+        authForm: {
+          ...newform.form,
+        },
+      });
+    } else {
+      console.log(2);
+      newform = {
+        form: {
+          email: {
+            elementType: "input",
+            elementConfig: {
+              type: "email",
+              placeholder: "Email",
+            },
+            value: "",
+            validation: {
+              isRequired: true,
+              isEmail: true,
+            },
+            valid: false,
+            touched: false,
+          },
+          password: {
+            elementType: "input",
+            elementConfig: {
+              type: "password",
+              placeholder: "Password",
+            },
+            value: "",
+            validation: {
+              isRequired: true,
+              minLength: 6,
+            },
+            valid: false,
+            touched: false,
+          },
+        },
+        isSignup: true,
+        formIsValid: false,
+      };
+      this.setState({
+        authForm: {
+          ...newform.form,
+        },
+      });
+    }
+    console.log(this.state.authForm);
   };
 
   formSubmit = (event, isSignup) => {
@@ -114,7 +241,12 @@ class Auth extends Component {
       formData.push({ id: key, inputData: this.state.authForm[key] });
     }
     let button = (
-      <Button btntype="Success">
+      <Button
+        btntype="Success"
+        disabled={
+          this.state.isSignup ? (this.state.formIsValid ? false : true) : false
+        }
+      >
         {this.state.isSignup
           ? this.props.loading
             ? "Signing up..."
